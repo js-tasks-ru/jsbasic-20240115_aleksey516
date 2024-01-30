@@ -1,5 +1,5 @@
 function getMinMax(str) {
-  numArr = str
+  const numArr = str
     .split(' ')
     .filter(subStr => Number(subStr));
   
