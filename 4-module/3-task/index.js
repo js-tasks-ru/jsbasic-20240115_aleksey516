@@ -1,5 +1,5 @@
 function highlight(table) {
-  for(let tr of table.querySelectorAll('tbody>tr')) {
+  for(let tr of table.rows) {
     
     if(tr.cells[3].dataset.available == 'true') {
       tr.classList.add('available');
