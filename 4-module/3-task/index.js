@@ -1,22 +1,32 @@
 function highlight(table) {
-  for(let tr of table.rows) {
+  
+  function indexByName(headerName) {
+    const rowHeader = table.querySelectorAll('thead>tr>td');
+    for(let cellName of rowHeader) {
+      if(cellName.textContent == headerName) {
+        return cellName.cellIndex;
+      }
+    }
+  }
     
-    if(tr.cells[3].dataset.available == 'true') {
+  for(let tr of table.querySelectorAll('tbody>tr')) {
+    
+    if(tr.cells[indexByName('Status')].dataset.available == 'true') {
       tr.classList.add('available');
     }
-    else if(tr.cells[3].dataset.available == 'false') {
+    else if(tr.cells[indexByName('Status')].dataset.available == 'false') {
       tr.classList.add('unavailable');
     } else {
       tr.setAttribute('hidden', '');
     }
   
-    if(tr.cells[2].textContent == 'm') {
+    if(tr.cells[indexByName('Gender')].textContent == 'm') {
       tr.classList.add('male');
     } else {
       tr.classList.add('female');
     }
   
-    if(tr.cells[1].textContent < 18) {
+    if(tr.cells[indexByName('Age')].textContent < 18) {
       tr.style.cssText += 'text-decoration: line-through';
     }
   }
