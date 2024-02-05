@@ -1,8 +1,8 @@
 function highlight(table) {
   
   function indexByName(headerName) {
-    const rowHeader = table.querySelectorAll('thead>tr>td');
-    for(let cellName of rowHeader) {
+    const cellsHeader = table.querySelectorAll('thead>tr>td');
+    for(let cellName of cellsHeader) {
       if(cellName.textContent == headerName) {
         return cellName.cellIndex;
       }
