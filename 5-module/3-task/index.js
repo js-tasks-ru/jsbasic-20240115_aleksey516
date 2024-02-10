@@ -3,14 +3,14 @@ function initCarousel() {
   const slidelWidth = document.querySelector('.carousel__slide').offsetWidth;
   const carouselInner = document.querySelector('.carousel__inner');
 
-  const carouselArrowRight = document.querySelector(".carousel__arrow_right");
-  const carouselArrowLeft = document.querySelector(".carousel__arrow_left");
+  const carouselArrowRight = document.querySelector('.carousel__arrow_right');
+  const carouselArrowLeft = document.querySelector('.carousel__arrow_left');
 
   let counterSlidePos = 0;
   
   function carouselMove(event) {
     if(event.target.closest('DIV') == carouselArrowRight) {
-      carouselInner.style.transform = `translateX(${-slidelWidth - counterSlidePos * slidelWidth}px)`;
+      carouselInner.style.transform = `translateX(${-slidelWidth * (counterSlidePos + 1)}px)`;
       counterSlidePos++;
     } else if(event.target.closest('DIV') == carouselArrowLeft){
       counterSlidePos--;
