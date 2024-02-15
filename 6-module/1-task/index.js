@@ -50,12 +50,13 @@ export default class UserTable {
     </thead>
     <tbody>
       ${this.rows
-      .map(row => `<tr>
-      <td>${row.name}</td>
-      <td>${row.age}</td>
-      <td>${row.salary}</td>
-      <td>${row.city}</td>
-      <td><button>X</button></td>
+      .map(row =>
+      `<tr>
+        <td>${row.name}</td>
+        <td>${row.age}</td>
+        <td>${row.salary}</td>
+        <td>${row.city}</td>
+        <td><button>X</button></td>
       </tr>`)
       .join('')}
       </tbody>

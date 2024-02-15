@@ -10,19 +10,6 @@ export default class ProductCard {
     this.render();
   }
 
-  render() {
-    const button = this.elem.querySelector('.card__button');
-    button.addEventListener('click', () => this.addCustomEvent());
-  }
-
-  addCustomEvent() {
-    const event = new CustomEvent("product-add", {
-                    detail: this.product.id,
-                    bubbles: true
-                  });
-    this.elem.dispatchEvent(event);
-  }
-
   createCard(product) {
     return createElement(`
     <div class="card">
@@ -38,5 +25,18 @@ export default class ProductCard {
       </div>
     </div>
     `) 
+  }
+
+  render() {
+    const button = this.elem.querySelector('.card__button');
+    button.addEventListener('click', () => this.addCustomEvent());
+  }
+
+  addCustomEvent() {
+    const event = new CustomEvent("product-add", {
+                    detail: this.product.id,
+                    bubbles: true
+                  });
+    this.elem.dispatchEvent(event);
   }
 }
