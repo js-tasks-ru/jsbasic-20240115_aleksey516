@@ -3,6 +3,12 @@ import createElement from '../../assets/lib/create-element.js';
 export default class Carousel {
   elem = null;
   slides = [];
+  carouselInner = {};
+  arrowLeft = {};
+  arrowRight = {};
+  slidelWidth = 0;
+  slideQuant = 0;
+  counterSlidePos = 0;
 
   constructor(slides) {
     this.slides = slides || this.slides;
@@ -45,29 +51,27 @@ export default class Carousel {
   }
 
   initCarousel() {
-    const carousel = this.elem;
-    const arrowRight = carousel.querySelector('.carousel__arrow_right');
-    const arrowLeft = carousel.querySelector('.carousel__arrow_left');
-    const slideQuant = carousel.querySelectorAll('.carousel__slide').length;
-    let counterSlidePos = 0;
-      
-    function carouselMove(event) {
-      const carouselInner = carousel.querySelector('.carousel__inner');
-      const slidelWidth = carousel.querySelector('.carousel__slide').offsetWidth;
-    
-      if(event.target.closest('.carousel__arrow_right')) {
-        carouselInner.style.transform = `translateX(${-slidelWidth * (counterSlidePos + 1)}px)`;
-        counterSlidePos++;
-      } else if(event.target.closest('.carousel__arrow_left')) {
-        counterSlidePos--;
-        carouselInner.style.transform = `translateX(${-slidelWidth * counterSlidePos}px)`;
-      }
-      counterSlidePos == 0 ? arrowLeft.style.display = 'none' : arrowLeft.style.display = '';
-      counterSlidePos == (slideQuant - 1) ? arrowRight.style.display = 'none' : arrowRight.style.display = '';
+    this.carouselInner = this.elem.querySelector('.carousel__inner');
+    this.arrowLeft = this.elem.querySelector('.carousel__arrow_left');
+    this.arrowRight = this.elem.querySelector('.carousel__arrow_right');
+    this.slideQuant = this.elem.querySelectorAll('.carousel__slide').length;
+
+    this.arrowLeft.style.display = 'none';
+    this.elem.addEventListener('click', (event) => this.carouselMove(event));
+  }
+
+  carouselMove(event) {
+    this.slidelWidth = this.elem.querySelector('.carousel__slide').offsetWidth;
+  
+    if(event.target.closest('.carousel__arrow_right')) {
+      this.carouselInner.style.transform = `translateX(${-this.slidelWidth * (this.counterSlidePos + 1)}px)`;
+      this.counterSlidePos++;
+    } else if(event.target.closest('.carousel__arrow_left')) {
+      this.counterSlidePos--;
+      this.carouselInner.style.transform = `translateX(${-this.slidelWidth * this.counterSlidePos}px)`;
     }
-    
-    arrowLeft.style.display = 'none';
-    carousel.addEventListener('click', (event) => carouselMove(event));
+    this.counterSlidePos == 0 ? this.arrowLeft.style.display = 'none' : this.arrowLeft.style.display = '';
+    this.counterSlidePos == (this.slideQuant - 1) ? this.arrowRight.style.display = 'none' : this.arrowRight.style.display = '';
   }
     
   render() {
