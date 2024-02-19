@@ -68,17 +68,17 @@ export default class StepSlider {
   }
 
   #renderOnPointer() {
-    this.elem.addEventListener('pointerdown', this.#onDown);
+    this.elem.addEventListener('pointerdown', this.#onPointerDown);
   }
   
-  #onDown = () => {
-    document.addEventListener('pointermove', this.#onMove);
-    document.addEventListener('pointerup', this.#onUp, {
+  #onPointerDown = () => {
+    document.addEventListener('pointermove', this.#onPointerMove);
+    document.addEventListener('pointerup', this.#onPointerUp, {
       once: true
     });
   }
   
-  #onMove = (event) => {
+  #onPointerMove = (event) => {
     this.elem.classList.add('slider_dragging');
     let sliderRect = this.elem.getBoundingClientRect();
 
@@ -101,9 +101,11 @@ export default class StepSlider {
     }
   }
   
-  #onUp = () => {
-    document.removeEventListener('pointermove', this.#onMove);
+  #onPointerUp = () => {
     this.#thumb.style.left = `${this.#valuePercents}%`;
+    this.#progress.style.width = `${this.#valuePercents}%`;
+
+    document.removeEventListener('pointermove', this.#onPointerMove);
     this.elem.classList.remove('slider_dragging');
     
     if(this.#sliderIsMoved) {
