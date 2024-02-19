@@ -84,10 +84,15 @@ export default class StepSlider {
 
     if(event.pageX > sliderRect.left && event.pageX < sliderRect.right) {
       this.#thumb.style.left = `${event.pageX - sliderRect.left}px`;
-      let left = event.clientX - sliderRect.left;
-        let leftRelative = left / this.elem.offsetWidth;
-        let approximateValue = leftRelative * this.#segments;
-        let _value = Math.round(approximateValue);
+
+      let _left = event.clientX - sliderRect.left;
+      let _leftRelative = _left / this.elem.offsetWidth;
+      let _approximateValue = _leftRelative * this.#segments;
+      let _valuePercents = _approximateValue / this.#segments * 100;
+      
+      this.#progress.style.width = `${_valuePercents}%`;
+
+      let _value = Math.round(_approximateValue);
 
         if(this.#value != _value) {
           this.#value = _value;
