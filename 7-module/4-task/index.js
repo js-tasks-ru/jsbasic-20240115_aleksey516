@@ -4,12 +4,12 @@ export default class StepSlider {
   elem = null;
   #steps = 0;
   #value = 0;
+  #currentValue = 0;
   #segments = 0;
   #valuePercents = 0;
   #thumb = null;
   #progress = null;
   #sliderValue = null;
-  #sliderIsMoved = false;
 
   constructor({ steps, value = 0 }) {
     this.#steps = steps;
@@ -55,13 +55,12 @@ export default class StepSlider {
         let left = event.clientX - this.elem.getBoundingClientRect().left;
         let leftRelative = left / this.elem.offsetWidth;
         let approximateValue = leftRelative * this.#segments;
-        let _value = Math.round(approximateValue);
+        this.#currentValue = Math.round(approximateValue);
 
-        if(this.#value != _value) {
-          this.#value = _value;
+        if(this.#value != this.#currentValue) {
+          this.#value = this.#currentValue;
           this.#moveSlider();
           this.#addCustomEvent();
-          this.#sliderIsMoved = false;
         }
       }
     });
@@ -91,24 +90,20 @@ export default class StepSlider {
       this.#thumb.style.left = `${_valuePercents}%`;
       this.#progress.style.width = `${_valuePercents}%`;
 
-      let _value = Math.round(_approximateValue);
-
-        if(this.#value != _value) {
-          this.#sliderIsMoved = true;
-          this.#value = _value;
-        }
+      this.#currentValue = Math.round(_approximateValue);
     }
   }
   
   #onUpPointer = () => {
+    if(this.#value != this.#currentValue) {
+      this.#value = this.#currentValue;
+      this.elem.classList.remove('slider_dragging');
+      this.#addCustomEvent();
+    }
+
     this.#moveSlider();
     document.removeEventListener('pointermove', this.#onMovePointer);
     this.elem.classList.remove('slider_dragging');
-    
-    if(this.#sliderIsMoved) {
-      this.#addCustomEvent();
-    }
-    this.#sliderIsMoved = false;
   }
 
   #moveSlider() {
