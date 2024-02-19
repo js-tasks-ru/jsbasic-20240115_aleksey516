@@ -94,6 +94,7 @@ export default class StepSlider {
       let _value = Math.round(_approximateValue);
 
         if(this.#value != _value) {
+          this.#sliderIsMoved = true;
           this.#value = _value;
         }
     }
@@ -119,8 +120,6 @@ export default class StepSlider {
     this.#sliderValue.textContent = this.#value;
     this.#thumb.style.left = `${this.#valuePercents}%`;
     this.#progress.style.width = `${this.#valuePercents}%`;
-
-    this.#sliderIsMoved = true;
   }
 
   #addCustomEvent() {
