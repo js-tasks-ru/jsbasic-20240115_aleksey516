@@ -9,6 +9,7 @@ export default class StepSlider {
   #thumb = null;
   #progress = null;
   #sliderValue = null;
+  #sliderIsMoved = false;
 
   constructor({ steps, value = 0 }) {
     this.#steps = steps;
@@ -60,6 +61,7 @@ export default class StepSlider {
           this.#value = _value;
           this.#moveSlider();
           this.#addCustomEvent();
+          this.#sliderIsMoved = false;
         }
       }
     });
@@ -78,9 +80,11 @@ export default class StepSlider {
   
   #onMove = (event) => {
     this.elem.classList.add('slider_dragging');
-    if(event.pageX > this.elem.getBoundingClientRect().left && event.pageX < this.elem.getBoundingClientRect().right) {
-      this.#thumb.style.left = `${event.pageX - this.elem.getBoundingClientRect().left}px`;
-      let left = event.clientX - this.elem.getBoundingClientRect().left;
+    let sliderRect = this.elem.getBoundingClientRect();
+
+    if(event.pageX > sliderRect.left && event.pageX < sliderRect.right) {
+      this.#thumb.style.left = `${event.pageX - sliderRect.left}px`;
+      let left = event.clientX - sliderRect.left;
         let leftRelative = left / this.elem.offsetWidth;
         let approximateValue = leftRelative * this.#segments;
         let _value = Math.round(approximateValue);
@@ -96,19 +100,24 @@ export default class StepSlider {
     document.removeEventListener('pointermove', this.#onMove);
     this.#thumb.style.left = `${this.#valuePercents}%`;
     this.elem.classList.remove('slider_dragging');
-    this.#addCustomEvent();
+    
+    if(this.#sliderIsMoved) {
+      this.#addCustomEvent();
+    }
+    this.#sliderIsMoved = false;
   }
 
   #moveSlider() {
     this.#valuePercents = this.#value / this.#segments * 100;
-    if(this.elem.querySelector('.slider__step-active')) {
-      this.elem.querySelector('.slider__step-active').classList.remove('slider__step-active');
-    }
+    
+    this.elem.querySelector('.slider__step-active').classList.remove('slider__step-active');
     this.elem.querySelector(`[data-id="${this.#value}"]`).classList.add('slider__step-active');
 
     this.#sliderValue.textContent = this.#value;
     this.#thumb.style.left = `${this.#valuePercents}%`;
     this.#progress.style.width = `${this.#valuePercents}%`;
+
+    this.#sliderIsMoved = true;
   }
 
   #addCustomEvent() {
