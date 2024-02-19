@@ -4,17 +4,19 @@ export default class StepSlider {
   elem = null;
   #steps = 0;
   #value = 0;
+  #segments = 0;
+  #valuePercents = 0;
   #thumb = null;
   #progress = null;
   #sliderValue = null;
-  #valuePercents = 0;
-  #segments = 0;
 
   constructor({ steps, value = 0 }) {
     this.#steps = steps;
     this.#value = value;
+    this.#segments = this.#steps - 1;
+    this.#valuePercents = this.#value / this.#segments * 100;
+
     this.elem = this.#createRootSlider() || this.elem;
-    this.#valuePercents = this.#value / (this.#steps - 1) * 100;
     this.#initSlider();
     this.#renderSliderOnClick();
   }
@@ -41,7 +43,7 @@ export default class StepSlider {
     this.#thumb = this.elem.querySelector('.slider__thumb');
     this.#progress = this.elem.querySelector('.slider__progress');
     this.#sliderValue = this.elem.querySelector('.slider__value');
-    this.#segments = this.#steps - 1;
+
     this.elem.querySelector(`[data-id="${this.#value}"]`).classList.add('slider__step-active');
   }
 
@@ -52,6 +54,7 @@ export default class StepSlider {
         let leftRelative = left / this.elem.offsetWidth;
         let approximateValue = leftRelative * this.#segments;
         let _value = Math.round(approximateValue);
+
         if(this.#value != _value) {
           this.#value = _value;
           this.#moveSlider();
@@ -64,9 +67,10 @@ export default class StepSlider {
   #moveSlider() {
     this.#valuePercents = this.#value / this.#segments * 100;
     if(this.elem.querySelector('.slider__step-active')) {
-        this.elem.querySelector('.slider__step-active').classList.remove('slider__step-active');
+      this.elem.querySelector('.slider__step-active').classList.remove('slider__step-active');
     }
     this.elem.querySelector(`[data-id="${this.#value}"]`).classList.add('slider__step-active');
+
     this.#sliderValue.textContent = this.#value;
     this.#thumb.style.left = `${this.#valuePercents}%`;
     this.#progress.style.width = `${this.#valuePercents}%`;

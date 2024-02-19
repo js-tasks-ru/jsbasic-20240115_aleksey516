@@ -9,13 +9,13 @@ export default class RibbonMenu {
 
   constructor(categories) {
     this.#categories = categories ||this.#categories;
-    this.elem = this.#createRibbonRoot(categories) || this.elem;
+    this.elem = this.#createRibbonRoot() || this.elem;
     this.#initRibbon();
     this.#renderButtons();
     this.#renderCategories();
   }
 
-  #createRibbonRoot(categories) {
+  #createRibbonRoot() {
     return createElement(`
     <div class="ribbon">
       <button class="ribbon__arrow ribbon__arrow_left">
@@ -39,16 +39,7 @@ export default class RibbonMenu {
     this.#arrowLeft = this.elem.querySelector('.ribbon__arrow_left');
     this.#arrowRight = this.elem.querySelector('.ribbon__arrow_right');
     
-    this.elem.addEventListener('click', (event) => this.#moveRibbon(event));
-  }
-
-  #moveRibbon(event) {
-    if(event.target.closest('.ribbon__arrow_left')) {
-      this.#ribbonInner.scrollBy(-350, 0);
-    }
-    else if(event.target.closest('.ribbon__arrow_right')) {
-      this.#ribbonInner.scrollBy(350, 0);
-    }
+    this.elem.addEventListener('click', this.#moveRibbon);
   }
 
   #renderButtons() {
@@ -74,6 +65,15 @@ export default class RibbonMenu {
 
       this.#addCustomEvent(event);
     });
+  }
+
+  #moveRibbon = (event) => {
+    if(event.target.closest('.ribbon__arrow_left')) {
+      this.#ribbonInner.scrollBy(-350, 0);
+    }
+    else if(event.target.closest('.ribbon__arrow_right')) {
+      this.#ribbonInner.scrollBy(350, 0);
+    }
   }
 
   #addCustomEvent(event) {

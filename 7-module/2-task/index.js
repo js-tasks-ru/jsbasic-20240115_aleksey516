@@ -8,6 +8,34 @@ export default class Modal {
     this.#renderOnClose();
   }
 
+  #createRootModal() {
+    return new createElement(`
+    <div class="modal">
+      <div class="modal__overlay"></div>
+      <div class="modal__inner">
+        <div class="modal__header">
+          <button type="button" class="modal__close">
+            <img src="/assets/images/icons/cross-icon.svg" alt="close-icon" />
+          </button>
+          <h3 class="modal__title">
+          </h3>
+        </div>
+        <div class="modal__body">
+        </div>
+      </div>
+    </div>
+    `);
+  }
+
+  #renderOnClose() {
+    this.#modal.addEventListener('click', (event) => {
+      if(event.target.closest('.modal__close')) {
+        this.close();
+      }
+    });
+    document.addEventListener('keydown', this.#closeOnKey);
+  }
+
   setTitle(title) {
     this.#modal.querySelector('.modal__title').textContent = title;
   }
@@ -29,38 +57,10 @@ export default class Modal {
     }
   }
 
-  #renderOnClose() {
-    this.#modal.addEventListener('click', (event) => {
-      if(event.target.closest('.modal__close')) {
-        this.close();
-      }
-    });
-    document.addEventListener('keydown', (event) => this.#closeOnKey(event));
-    document.removeEventListener('keydown', (event) => this.#closeOnKey(event));
-  }
-
-  #closeOnKey(event) {
+  #closeOnKey = (event) => {
     if(event.code == 'Escape') {
       this.close();
     }
-  }
-
-  #createRootModal() {
-    return new createElement(`
-    <div class="modal">
-    <div class="modal__overlay"></div>
-    <div class="modal__inner">
-      <div class="modal__header">
-        <button type="button" class="modal__close">
-          <img src="/assets/images/icons/cross-icon.svg" alt="close-icon" />
-        </button>
-        <h3 class="modal__title">
-        </h3>
-      </div>
-      <div class="modal__body">
-      </div>
-    </div>
-  </div>
-    `);
+    document.removeEventListener('keydown', this.#closeOnKey);
   }
 }
