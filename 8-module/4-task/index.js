@@ -174,15 +174,15 @@ export default class Cart {
     }
   }
 
-  onSubmit(event) {
+  async onSubmit(event) {
     event.preventDefault();
     this.#modalBody.querySelector(`[type="submit"]`).classList.add('is-loading');
-    let response = fetch('https://httpbin.org/post', {
+
+    let response = await fetch('https://httpbin.org/post', {
       method: 'POST',
       body: new FormData(this.#form)
     });
-
-    if(response) {
+    if(response.ok) {
       this.#modal.setTitle('Success!');
       this.cartItems.splice(0,);
       this.#modal.setBody(createElement(`
