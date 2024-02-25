@@ -9,7 +9,8 @@ export default class Cart {
     if(product == null || product == undefined) {
       return;
     }
-    let cartItem = this.cartItems.find(cartItem => cartItem.product == product);
+    let cartItem = this.cartItems.find(cartItem =>
+       cartItem.product == product);
     if(cartItem) {
       cartItem.count++;
     } else {
@@ -20,7 +21,8 @@ export default class Cart {
   }
 
   updateProductCount(productId, amount) {
-    let cartItem = this.cartItems.find(cartItem => cartItem.product.id == productId);
+    let cartItem = this.cartItems.find(cartItem =>
+       cartItem.product.id == productId);
     if(amount == 1) {
       cartItem.count++;
     } else {
@@ -47,7 +49,8 @@ export default class Cart {
   getTotalPrice() {
     let totalPrice = 0;
     this.cartItems
-      .forEach(cartItem => totalPrice += cartItem.count * cartItem.product.price);
+      .forEach(cartItem =>
+         totalPrice += cartItem.count * cartItem.product.price);
     return totalPrice;
   }
 

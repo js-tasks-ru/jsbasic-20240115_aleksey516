@@ -36,10 +36,9 @@ export default class ProductGrid {
       this.productsGridInner.append(new ProductCard(product).elem));
   }
 
-  updateFilter(filters) {
-    for(let key in filters) {
-      this.filters[key] = filters[key];
-    }
+  updateFilter(filters) {   
+    this.filters = {...this.filters, ...filters};
+    
     this.renderCards(this.filterProducts());
   }
 
