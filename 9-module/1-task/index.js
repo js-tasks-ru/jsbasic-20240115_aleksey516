@@ -3,6 +3,6 @@ export default function promiseClick(button) {
     function listener(event) {
       resolve(event);
     }
-    button.addEventListener("click", listener);
+    button.addEventListener("click", listener, { once: true });
   });
 }
