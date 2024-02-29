@@ -1,9 +1,11 @@
 import createElement from '../../assets/lib/create-element.js';
-
 export default class CartIcon {
+
+  initialTopCoord = 0;
+  leftIndent = 0;
+
   constructor() {
     this.render();
-
     this.addEventListeners();
   }
 
@@ -20,6 +22,11 @@ export default class CartIcon {
           <span class="cart-icon__count">${cart.getTotalCount()}</span>
           <span class="cart-icon__price">€${cart.getTotalPrice().toFixed(2)}</span>
         </div>`;
+
+      this.leftIndent = Math.min(
+        document.querySelector('.container').getBoundingClientRect().right + 20,
+        document.documentElement.clientWidth - this.elem.offsetWidth - 10
+      ) + 'px';
 
       this.updatePosition();
 
@@ -39,6 +46,21 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    // ваш код ...
+    if ((window.pageYOffset > this.initialTopCoord) && (document.documentElement.clientWidth > 767)) {
+      Object.assign(this.elem.style, {
+        position: 'fixed',
+        top: '50px',
+        zIndex: 1e3,
+        right: '10px',
+        left: this.leftIndent
+      });
+    } else {
+      Object.assign(this.elem.style, {
+        position: '',
+        top: '',
+        left: '',
+        zIndex: ''
+      });
+    }
   }
 }
